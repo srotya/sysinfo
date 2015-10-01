@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,13 +16,14 @@ public class CPUMon implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(CPUMon.class.getName());
 	public static final String CPU_STATS = "/proc/stat";
-	private CPUUsage usage;
+	private AtomicReference<CPUUsage> usage;
 	private AtomicBoolean loopControl = null;
 	private AtomicInteger sleepTime;
 	
 	public CPUMon(AtomicBoolean loopControl, AtomicInteger sleepTime) {
 		this.loopControl = loopControl;
 		this.sleepTime = sleepTime;
+		this.usage = new AtomicReference<CPUUsage>(null);
 	}
 	
 	public void run() {
@@ -31,10 +33,10 @@ public class CPUMon implements Runnable {
 				if(temp==null) {
 					// do nothing, just continue and wait for the sleep time to retry 
 				}else if(usage==null) {
-					usage = temp;
+					usage.set(temp);
 				}else {
-					computeCPUPercentage(usage, temp);
-					usage = temp;
+					computeCPUPercentage(usage.get(), temp);
+					usage.set(temp);
 				}
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Failed to get CPU Usage", e);
@@ -136,6 +138,6 @@ public class CPUMon implements Runnable {
 	}
 
 	public CPUUsage getUsage() {
-		return usage;
+		return usage.get();
 	}
 }
