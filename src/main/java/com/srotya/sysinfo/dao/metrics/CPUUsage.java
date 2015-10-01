@@ -2,6 +2,16 @@ package com.srotya.sysinfo.dao.metrics;
 
 import java.io.Serializable;
 
+/**
+ * Extends from ProcessorUsage to capture the usage for the entire CPU.
+ * 
+ * CPU in the context of Sysinfo refers to any and all processors that Linux kernel registers in /proc.
+ * 
+ * This object encapsulates all CPUs but itself contains the averages as contained in /proc
+ * 
+ * @author ambudsharma
+ *
+ */
 public class CPUUsage extends ProcessorUsage implements Serializable {
 
 	private static final long serialVersionUID = 1L;

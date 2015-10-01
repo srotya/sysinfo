@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A utility to class.
+ * 
+ * @author ambudsharma
+ *
+ */
 public class Util {
 
 	private Util() {

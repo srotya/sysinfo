@@ -11,6 +11,12 @@ import java.util.logging.Logger;
 
 import com.srotya.sysinfo.dao.metrics.CPUUsage;
 
+/**
+ * Cuurent entry point of Sysinfo. 
+ * 
+ * @author ambudsharma
+ *
+ */
 public class SysInfoService {
 
 	public static void main(String[] args) {

@@ -12,6 +12,10 @@ import java.util.logging.Logger;
 import com.srotya.sysinfo.dao.metrics.CPUUsage;
 import com.srotya.sysinfo.dao.metrics.ProcessorUsage;
 
+/**
+ * @author ambudsharma
+ *
+ */
 public class CPUMon implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(CPUMon.class.getName());

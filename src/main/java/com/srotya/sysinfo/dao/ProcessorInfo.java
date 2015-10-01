@@ -2,6 +2,12 @@ package com.srotya.sysinfo.dao;
 
 import java.io.Serializable;
 
+/**
+ * Processor DAO. Captures fields exposed by /proc/cpuinfo like CPU vendor, cores, flags etc.
+ * 
+ * @author ambudsharma
+ *
+ */
 public class ProcessorInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;

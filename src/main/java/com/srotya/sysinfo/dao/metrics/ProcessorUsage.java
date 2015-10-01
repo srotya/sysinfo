@@ -2,6 +2,12 @@ package com.srotya.sysinfo.dao.metrics;
 
 import java.io.Serializable;
 
+/**
+ * Pojo to capture Processor and {@link CPUUsage}. Numbers here are measured in USER_HZ (as stated in /proc/stat definition)
+ * 
+ * @author ambudsharma
+ *
+ */
 public class ProcessorUsage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
