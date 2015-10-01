@@ -1,0 +1,5 @@
+cpu 1
+memo 2
+disk 3
+
+file 4
