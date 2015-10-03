@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 Ambud Sharma
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * 
+ * You may obtain a copy of the License at
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.srotya.sysinfo.service;
 
 import java.io.IOException;
@@ -7,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-import com.srotya.sysinfo.dao.metrics.NeDeviceUsage;
+import com.srotya.sysinfo.dao.metrics.NetDeviceUsage;
 import com.srotya.sysinfo.dao.metrics.NetworkUsage;
 
 public class NetMon extends AbstractMon {
@@ -33,16 +48,16 @@ public class NetMon extends AbstractMon {
 		List<String> lines = Util.readTextFileAsList(fileName);
 		usage.setTs(System.currentTimeMillis());
 		// ignore lines 0 & 1
-		List<NeDeviceUsage> devices = new ArrayList<NeDeviceUsage>();
+		List<NetDeviceUsage> devices = new ArrayList<NetDeviceUsage>();
 		for(int i=2;i<lines.size();i++) {
 			devices.add(computeNDeviceUsage(lines.get(i)));
 		}
-		usage.setDevices(devices.toArray(new NeDeviceUsage[1]));
+		usage.setDevices(devices.toArray(new NetDeviceUsage[1]));
 		return usage;
 	}
 	
-	public static NeDeviceUsage computeNDeviceUsage(String deviceLine) {
-		NeDeviceUsage device = new NeDeviceUsage();
+	public static NetDeviceUsage computeNDeviceUsage(String deviceLine) {
+		NetDeviceUsage device = new NetDeviceUsage();
 		String[] splits = deviceLine.split("\\s+");
 		
 		device.setDeviceName(splits[1].replace(":", ""));
