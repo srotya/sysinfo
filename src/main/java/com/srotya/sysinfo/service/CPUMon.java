@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 Ambud Sharma
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * 
+ * You may obtain a copy of the License at
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.srotya.sysinfo.service;
 
 import java.io.IOException;
@@ -16,43 +31,32 @@ import com.srotya.sysinfo.dao.metrics.ProcessorUsage;
  * @author ambudsharma
  *
  */
-public class CPUMon implements Runnable {
+public class CPUMon extends AbstractMon {
 
 	private static final Logger logger = Logger.getLogger(CPUMon.class.getName());
 	public static final String CPU_STATS = "/proc/stat";
 	private AtomicReference<CPUUsage> usage;
-	private AtomicBoolean loopControl = null;
-	private AtomicInteger sleepTime;
 	
 	public CPUMon(AtomicBoolean loopControl, AtomicInteger sleepTime) {
-		this.loopControl = loopControl;
-		this.sleepTime = sleepTime;
+		super(loopControl, sleepTime);
 		this.usage = new AtomicReference<CPUUsage>(null);
 	}
 	
-	public void run() {
-		do {
-			try{
-				CPUUsage temp = getCPUUsage();
-				if(temp==null) {
-					// do nothing, just continue and wait for the sleep time to retry 
-				}else if(usage==null) {
-					usage.set(temp);
-				}else {
-					computeCPUPercentage(usage.get(), temp);
-					usage.set(temp);
-				}
-			}catch(Exception e) {
-				logger.log(Level.SEVERE, "Failed to get CPU Usage", e);
+	@Override
+	public void monitor() {
+		try{
+			CPUUsage temp = getCPUUsage();
+			if(temp==null) {
+				// do nothing, just continue and wait for the sleep time to retry 
+			}else if(usage==null) {
+				usage.set(temp);
+			}else {
+				computeCPUPercentage(usage.get(), temp);
+				usage.set(temp);
 			}
-			try {
-				Thread.sleep(sleepTime.get());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				logger.log(Level.SEVERE, "CPU Monitor thread interrupted, exitting monitoring loop");
-				break;
-			}
-		}while(loopControl.get());
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Failed to get CPU Usage", e);
+		}
 	}
 	
 	public CPUUsage getCPUUsage() throws IOException {
@@ -143,5 +147,9 @@ public class CPUMon implements Runnable {
 
 	public CPUUsage getUsage() {
 		return usage.get();
+	}
+
+	public Logger getLogger() {
+		return logger;
 	}
 }
