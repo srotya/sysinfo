@@ -20,27 +20,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.srotya.sysinfo.dao.metrics.NetDeviceUsage;
 import com.srotya.sysinfo.dao.metrics.NetworkUsage;
 
+/**
+ * Network device statistics monitoring daemon. Monitors /proc/net/dev 
+ * 
+ * @author ambudsharma
+ *
+ */
 public class NetMon extends AbstractMon {
+	
+	public static final String NETWORK_STATS = "/proc/net/dev";
+	private static final Logger logger = Logger.getLogger(NetMon.class.getName());
 
+	private AtomicReference<NetworkUsage> usage;
+	
 	public NetMon(AtomicBoolean loopControl, AtomicInteger sleepTime) {
 		super(loopControl, sleepTime);
+		this.usage = new AtomicReference<NetworkUsage>(null);
 	}
 
 	@Override
 	public Logger getLogger() {
-		// TODO Auto-generated method stub
-		return null;
+		return logger;
 	}
 
 	@Override
 	public void monitor() {
-		// TODO Auto-generated method stub
-
+		try {
+			usage.set(getNetworkUsage());
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Failed to get network usage", e);
+		}
+	}
+	
+	public NetworkUsage getNetworkUsage() throws IOException {
+		return computeUsage(NETWORK_STATS);
 	}
 	
 	public static NetworkUsage computeUsage(String fileName) throws IOException {

@@ -20,6 +20,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Abstract Monitoring daemon class definition
+ * 
+ * @author ambudsharma
+ *
+ */
 public abstract class AbstractMon implements Runnable {
 	
 	private AtomicBoolean loopControl = null;

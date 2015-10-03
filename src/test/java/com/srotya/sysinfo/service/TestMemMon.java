@@ -47,8 +47,4 @@ public class TestMemMon {
 		assertEquals(7656, usage.getPageTables());
 	}
 	
-	public void test() {
-		
-	}
-
 }

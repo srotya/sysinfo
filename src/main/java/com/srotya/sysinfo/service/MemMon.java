@@ -36,7 +36,8 @@ import com.srotya.sysinfo.dao.metrics.MemUsage;
  */
 public class MemMon extends AbstractMon {
 	
-	private static final String MEM_STATS = "/proc/meminfo"; 
+	public static final String MEM_STATS = "/proc/meminfo";
+	
 	private static final String MAPPED = "Mapped";
 	private static final String PAGE_TABLES = "PageTables";
 	private static final String SWAP_FREE = "SwapFree";
@@ -101,8 +102,8 @@ public class MemMon extends AbstractMon {
 		return usage;
 	}
 
-	public AtomicReference<MemUsage> getMemUsage() {
-		return memUsage;
+	public MemUsage getMemUsage() {
+		return memUsage.get();
 	}
 	
 }
