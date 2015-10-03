@@ -15,6 +15,29 @@
  */
 package com.srotya.sysinfo.api;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.srotya.sysinfo.dao.config.NetworkInfo;
+import com.srotya.sysinfo.dao.metrics.NetworkUsage;
+import com.srotya.sysinfo.service.SysInfoRESTController;
+
+@Path("/network")
 public class ProcNetworkInfo {
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public NetworkInfo getInfo() {
+		return new NetworkInfo();
+	}
+	
+	@Path("/stats")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public NetworkUsage getUsage() {
+		return SysInfoRESTController.getNetMon().getUsage();
+	}
+	
 }

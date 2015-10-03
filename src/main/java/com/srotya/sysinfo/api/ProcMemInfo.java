@@ -15,12 +15,35 @@
  */
 package com.srotya.sysinfo.api;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.srotya.sysinfo.dao.config.MemoryInfo;
+import com.srotya.sysinfo.dao.metrics.MemoryUsage;
+import com.srotya.sysinfo.service.SysInfoRESTController;
+
 /**
  * REST Endpoint for Memory Info and Stats
  * 
  * @author ambudsharma
  *
  */
+@Path("/memory")
 public class ProcMemInfo {
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public MemoryInfo getInfo() {
+		return new MemoryInfo();
+	}
+	
+	@GET
+	@Path("/stats")
+	@Produces(MediaType.APPLICATION_JSON)
+	public MemoryUsage getUsage() {
+		return SysInfoRESTController.getMemMon().getUsage();
+	}
 
 }

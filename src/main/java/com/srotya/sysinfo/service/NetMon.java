@@ -63,6 +63,12 @@ public class NetMon extends AbstractMon {
 		return computeUsage(NETWORK_STATS);
 	}
 	
+	/**
+	 * Compute network usage for all attached network devices
+	 * @param fileName
+	 * @return network usage
+	 * @throws IOException
+	 */
 	public static NetworkUsage computeUsage(String fileName) throws IOException {
 		NetworkUsage usage = new NetworkUsage();
 		List<String> lines = Util.readTextFileAsList(fileName);
@@ -76,6 +82,11 @@ public class NetMon extends AbstractMon {
 		return usage;
 	}
 	
+	/**
+	 * Parse device stats line and populate {@link NetDeviceUsage} object
+	 * @param deviceLine
+	 * @return networkDeviceUsage
+	 */
 	public static NetDeviceUsage computeNDeviceUsage(String deviceLine) {
 		NetDeviceUsage device = new NetDeviceUsage();
 		String[] splits = deviceLine.split("\\s+");
@@ -103,4 +114,7 @@ public class NetMon extends AbstractMon {
 		return device;
 	}
 
+	public NetworkUsage getUsage() {
+		return usage.get();
+	}
 }

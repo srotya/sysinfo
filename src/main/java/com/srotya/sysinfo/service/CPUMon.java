@@ -51,7 +51,7 @@ public class CPUMon extends AbstractMon {
 			CPUUsage temp = getCPUUsage();
 			if(temp==null) {
 				// do nothing, just continue and wait for the sleep time to retry 
-			}else if(usage==null) {
+			}else if(usage.get()==null) {
 				usage.set(temp);
 			}else {
 				computeCPUPercentage(usage.get(), temp);

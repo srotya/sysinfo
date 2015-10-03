@@ -21,6 +21,4 @@ package com.srotya.sysinfo.dao.metrics;
  */
 public class DiskUsage {
 
-	private long ts;
-	
 }

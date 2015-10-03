@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.srotya.sysinfo.dao.metrics.MemUsage;
+import com.srotya.sysinfo.dao.metrics.MemoryUsage;
 
 /**
  * @author ambudsharma
@@ -33,7 +33,7 @@ public class TestMemMon {
 	
 	@Test
 	public void testComputeMemoryUsage() throws IOException {
-		MemUsage usage = MemMon.computeMemoryUsage(getClass().getResource(TEST_MEM_INFO_FILE).getFile());
+		MemoryUsage usage = MemMon.computeMemoryUsage(getClass().getResource(TEST_MEM_INFO_FILE).getFile());
 		assertEquals(1016928, usage.getMemTotal());
 		assertEquals(557616, usage.getMemFree());
 		assertEquals(594840, usage.getMemAvailable());

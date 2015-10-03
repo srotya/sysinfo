@@ -19,10 +19,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.srotya.sysinfo.dao.metrics.CPUUsage;
 
@@ -40,10 +36,6 @@ public class SysInfoService {
 			System.err.println("Sysinfo currently supports Linux based operating systems only.");
 			System.exit(-1);
 		}
-		
-		Handler consoleHandler = new ConsoleHandler();
-		consoleHandler.setLevel(Level.FINEST);
-		Logger.getAnonymousLogger().addHandler(consoleHandler);
 		
 		final AtomicBoolean loopControl = new AtomicBoolean(true);
 		AtomicInteger sleepTime = new AtomicInteger(500);

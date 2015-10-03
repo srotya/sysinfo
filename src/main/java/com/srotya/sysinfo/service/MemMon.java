@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.srotya.sysinfo.dao.metrics.MemUsage;
+import com.srotya.sysinfo.dao.metrics.MemoryUsage;
 
 /**
  * Memory usage monitoring daemon that monitors the /proc/meminfo file to get memory
@@ -51,11 +51,11 @@ public class MemMon extends AbstractMon {
 	private static final String MEM_TOTAL = "MemTotal";
 	private static final Logger logger = Logger.getLogger(MemMon.class.getName());
 	
-	private AtomicReference<MemUsage> memUsage;
+	private AtomicReference<MemoryUsage> usage;
 
 	public MemMon(AtomicBoolean loopControl, AtomicInteger sleepTime) {
 		super(loopControl, sleepTime);
-		this.memUsage = new AtomicReference<MemUsage>(null);
+		this.usage = new AtomicReference<MemoryUsage>(null);
 	}
 
 	@Override
@@ -66,17 +66,17 @@ public class MemMon extends AbstractMon {
 	@Override
 	public void monitor() {
 		try {
-			memUsage.set(getMemoryUsage());
+			usage.set(getMemoryUsage());
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to get memory usage", e);
 		}
 	}
 	
-	public MemUsage getMemoryUsage() throws IOException {
+	public MemoryUsage getMemoryUsage() throws IOException {
 		return computeMemoryUsage(MEM_STATS);
 	}
 	
-	public static MemUsage computeMemoryUsage(String memInfoFile) throws IOException {
+	public static MemoryUsage computeMemoryUsage(String memInfoFile) throws IOException {
 		List<String> lines = Util.readTextFileAsList(memInfoFile);
 		long ts = System.currentTimeMillis();
 		Map<String, Long> data = new HashMap<String, Long>();
@@ -85,7 +85,7 @@ public class MemMon extends AbstractMon {
 			data.put(splits[0].replace(":", ""), Long.parseLong(splits[1]));
 		}
 		
-		MemUsage usage = new MemUsage();
+		MemoryUsage usage = new MemoryUsage();
 		usage.setTs(ts);
 		usage.setMemTotal(data.get(MEM_TOTAL));
 		usage.setMemFree(data.get(MEM_FREE));
@@ -101,9 +101,9 @@ public class MemMon extends AbstractMon {
 		
 		return usage;
 	}
-
-	public MemUsage getMemUsage() {
-		return memUsage.get();
+	
+	public MemoryUsage getUsage() {
+		return usage.get();
 	}
 	
 }

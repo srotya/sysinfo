@@ -15,14 +15,36 @@
  */
 package com.srotya.sysinfo.api;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.srotya.sysinfo.dao.config.CPUInfo;
+import com.srotya.sysinfo.dao.metrics.CPUUsage;
+import com.srotya.sysinfo.service.SysInfoRESTController;
+
 /**
  * REST endpoint for CPU Info and Stats   		
  * 
  * @author ambudsharma
  *
  */
+@Path("/cpu")
 public class ProcCPUInfo {
-
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public CPUInfo getInfo() {
+		CPUInfo info = new CPUInfo();
+		return info;
+	}
+	
+	@Path("/stats")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public CPUUsage getUsage() {
+		return SysInfoRESTController.getCpuMon().getUsage();
+	}
 	
 }

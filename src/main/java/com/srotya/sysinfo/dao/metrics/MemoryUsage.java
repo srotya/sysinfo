@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @author ambudsharma
  *
  */
-public class MemUsage implements Serializable {
+public class MemoryUsage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -38,7 +38,7 @@ public class MemUsage implements Serializable {
 	private long mapped;
 	private long pageTables;
 
-	public MemUsage() {
+	public MemoryUsage() {
 	}
 
 	public long getMemTotal() {
