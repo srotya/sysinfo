@@ -28,6 +28,9 @@ import com.srotya.sysinfo.dao.metrics.CPUUsage;
 import com.srotya.sysinfo.dao.metrics.ProcessorUsage;
 
 /**
+ * CPU usage monitoring daemon, that monitors CPU usage and computes overall usage percentage
+ * from the /pro/stat file
+ * 
  * @author ambudsharma
  *
  */
@@ -65,8 +68,10 @@ public class CPUMon extends AbstractMon {
 	
 	public static CPUUsage getCPUUsage(String statFile) throws IOException {
 		List<String> stats = Util.readTextFileAsList(statFile);
-		String cpuUsage = stats.get(0);
 		CPUUsage usage = new CPUUsage();
+		usage.setTs(System.currentTimeMillis());
+		
+		String cpuUsage = stats.get(0);
 		parseAndGetCPUUsage(cpuUsage, usage);
 		
 		// get individual CPUs and Cores

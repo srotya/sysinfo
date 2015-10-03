@@ -21,16 +21,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.srotya.sysinfo.dao.metrics.MemUsage;
 
 /**
+ * Memory usage monitoring daemon that monitors the /proc/meminfo file to get memory
+ * usage statistics.
+ * 
  * @author ambudsharma
  *
  */
 public class MemMon extends AbstractMon {
 	
+	private static final String MEM_STATS = "/proc/meminfo"; 
 	private static final String MAPPED = "Mapped";
 	private static final String PAGE_TABLES = "PageTables";
 	private static final String SWAP_FREE = "SwapFree";
@@ -43,9 +49,12 @@ public class MemMon extends AbstractMon {
 	private static final String MEM_FREE = "MemFree";
 	private static final String MEM_TOTAL = "MemTotal";
 	private static final Logger logger = Logger.getLogger(MemMon.class.getName());
+	
+	private AtomicReference<MemUsage> memUsage;
 
 	public MemMon(AtomicBoolean loopControl, AtomicInteger sleepTime) {
 		super(loopControl, sleepTime);
+		this.memUsage = new AtomicReference<MemUsage>(null);
 	}
 
 	@Override
@@ -55,10 +64,20 @@ public class MemMon extends AbstractMon {
 
 	@Override
 	public void monitor() {
+		try {
+			memUsage.set(getMemoryUsage());
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Failed to get memory usage", e);
+		}
+	}
+	
+	public MemUsage getMemoryUsage() throws IOException {
+		return computeMemoryUsage(MEM_STATS);
 	}
 	
 	public static MemUsage computeMemoryUsage(String memInfoFile) throws IOException {
 		List<String> lines = Util.readTextFileAsList(memInfoFile);
+		long ts = System.currentTimeMillis();
 		Map<String, Long> data = new HashMap<String, Long>();
 		for(String line:lines) {
 			String[] splits = line.split("\\s+");
@@ -66,6 +85,7 @@ public class MemMon extends AbstractMon {
 		}
 		
 		MemUsage usage = new MemUsage();
+		usage.setTs(ts);
 		usage.setMemTotal(data.get(MEM_TOTAL));
 		usage.setMemFree(data.get(MEM_FREE));
 		usage.setMemAvailable(data.get(MEM_AVAILABLE));
@@ -79,6 +99,10 @@ public class MemMon extends AbstractMon {
 		usage.setMapped(data.get(MAPPED));
 		
 		return usage;
+	}
+
+	public AtomicReference<MemUsage> getMemUsage() {
+		return memUsage;
 	}
 	
 }

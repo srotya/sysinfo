@@ -31,6 +31,7 @@ public class CPUUsage extends ProcessorUsage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private long ts;
 	private ProcessorUsage[] processors;
 	
 	public ProcessorUsage[] getProcessors() {
@@ -44,6 +45,14 @@ public class CPUUsage extends ProcessorUsage implements Serializable {
 	@Override
 	public String toString() {
 		return super.toString();
+	}
+
+	public long getTs() {
+		return ts;
+	}
+
+	public void setTs(long ts) {
+		this.ts = ts;
 	}
 
 }

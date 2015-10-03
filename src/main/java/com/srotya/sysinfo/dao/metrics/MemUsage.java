@@ -25,6 +25,7 @@ public class MemUsage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private long ts;
 	private long memTotal;
 	private long memFree;
 	private long memAvailable;
@@ -126,5 +127,13 @@ public class MemUsage implements Serializable {
 
 	public void setPageTables(long pageTables) {
 		this.pageTables = pageTables;
+	}
+
+	public long getTs() {
+		return ts;
+	}
+
+	public void setTs(long ts) {
+		this.ts = ts;
 	}
 }
