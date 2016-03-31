@@ -112,7 +112,6 @@ public class CPUMon extends AbstractMon {
 	 * 
 	 * 
 	 * @param currUsage
-	 * @return
 	 */
 	public static void computeCPUPercentage(CPUUsage prevUsage, CPUUsage currUsage) {
 		computeProcessorPercentage(prevUsage, currUsage);
