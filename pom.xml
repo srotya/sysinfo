@@ -9,7 +9,7 @@
 
 	<groupId>com.srotya.sys</groupId>
 	<artifactId>sysinfo</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>sysinfo</name>
@@ -28,7 +28,7 @@
 		<url>https://github.com/srotya/sysinfo.git</url>
 		<connection>scm:git:git@github.com:srotya/sysinfo.git</connection>
 		<developerConnection>scm:git:git@github.com:srotya/sysinfo.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>sysinfo-0.0.2</tag>
 	</scm>
 
 	<licenses>
