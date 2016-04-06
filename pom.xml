@@ -8,7 +8,7 @@
   </parent>
   <groupId>com.srotya.sys</groupId>
   <artifactId>sysinfo</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.3</version>
   <packaging>jar</packaging>
   <name>sysinfo</name>
   <description>Sysinfo is a linux daemon written in Java that exposes OS info and metrics via a REST API.
@@ -156,6 +156,6 @@
     <connection>scm:git:git@github.com:srotya/sysinfo.git</connection>
     <developerConnection>scm:git:git@github.com:srotya/sysinfo.git</developerConnection>
     <url>https://github.com/srotya/sysinfo.git</url>
-    <tag>HEAD</tag>
+    <tag>sysinfo-0.0.3</tag>
   </scm>
 </project>
