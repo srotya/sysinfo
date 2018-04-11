@@ -15,10 +15,24 @@
  */
 package com.srotya.sysinfo.dao.metrics;
 
-/**
- * @author ambudsharma
- *
- */
-public class DiskUsage {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DiskUsage implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private List<DiskDevUsage> devs;
+	
+	public DiskUsage() {
+		devs = new ArrayList<>();
+	}
+
+	/**
+	 * @return the devs
+	 */
+	public List<DiskDevUsage> getDevs() {
+		return devs;
+	}
 
 }

@@ -25,7 +25,7 @@ import com.srotya.sysinfo.dao.metrics.CPUUsage;
 /**
  * Cuurent entry point of Sysinfo. 
  * 
- * @author ambudsharma
+ * @author ambud
  *
  */
 public class SysInfoService {
