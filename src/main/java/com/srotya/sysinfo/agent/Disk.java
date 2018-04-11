@@ -19,11 +19,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.srotya.sysinfo.dao.metrics.DiskDevUsage;
-import com.srotya.sysinfo.dao.metrics.DiskUsage;
 import com.srotya.sysinfo.service.DiskMon;
 
 public class Disk implements Runnable {
@@ -39,6 +39,7 @@ public class Disk implements Runnable {
 		this.hostname = hostname;
 		this.url = url;
 		builder = new ProcessBuilder("iostat", "-xmd");
+		System.out.println("Disk metrics initialized");
 	}
 
 	public String readAllLines(BufferedReader reader) throws IOException {
@@ -47,6 +48,7 @@ public class Disk implements Runnable {
 		while ((tmp = reader.readLine()) != null) {
 			builder.append(tmp + "\n");
 		}
+		reader.close();
 		return builder.toString();
 	}
 
@@ -61,18 +63,17 @@ public class Disk implements Runnable {
 		}
 	}
 
-	private StringBuilder getData() throws IOException {
+	private StringBuilder getData() throws Exception {
 		Process proc = builder.start();
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(proc.getInputStream(), Charset.defaultCharset()));
 		String lines = readAllLines(reader);
-		proc.destroy();
-
+		proc.waitFor();
 		StringBuilder builder = new StringBuilder();
-		DiskUsage disk = DiskMon.computeUsage(lines);
+		List<DiskDevUsage> disk = DiskMon.computeUsage(lines);
 		long ts = System.currentTimeMillis();
-		for (int i = 0; i < disk.getDevs().size(); i++) {
-			DiskDevUsage dev = disk.getDevs().get(i);
+		for (int i = 0; i < disk.size(); i++) {
+			DiskDevUsage dev = disk.get(i);
 			String format = String.format(DISK_METRIC, hostname, dev.getDev(), dev.getRrqms(), dev.getWrqms(),
 					dev.getRs(), dev.getWs(), dev.getRmsec(), dev.getWmsec(), dev.getAvgrqsz(), dev.getAvgqusz(),
 					dev.getAwait(), dev.getSvctm(), dev.getPutil(), ts * 1000 * 1000);

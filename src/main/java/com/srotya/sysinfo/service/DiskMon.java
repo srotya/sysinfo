@@ -16,6 +16,7 @@
 package com.srotya.sysinfo.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.srotya.sysinfo.dao.metrics.DiskDevUsage;
-import com.srotya.sysinfo.dao.metrics.DiskUsage;
 
 /**
  * Disk monitoring, uses iostat
@@ -56,21 +56,20 @@ public class DiskMon extends AbstractMon {
 			logger.log(Level.SEVERE, "Failed to get disk usage", e);
 		}
 	}
-	
-	public static DiskUsage computeUsage(String lines) throws IOException {
+
+	public static List<DiskDevUsage> computeUsage(String lines) throws Exception {
+		List<DiskDevUsage> devs = new ArrayList<>();
 		String[] split = lines.split("\\n");
 		String line = split[0];
-		int i = 1;
-		DiskUsage usage = new DiskUsage();
-		List<DiskDevUsage> devs = usage.getDevs();
-		while (i < split.length) {
+		for (int i = 1; i < split.length; i++) {
 			line = split[i];
 			if (line.startsWith("sda")) {
 				devs.add(computeDevUsage(line));
 			}
-			i++;
 		}
-		return usage;
+		System.out.println("Returning usage");
+		return devs;
+
 	}
 
 	public static DiskDevUsage computeDevUsage(String line) throws IOException {

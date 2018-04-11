@@ -20,11 +20,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 import org.junit.Test;
 
 import com.srotya.sysinfo.dao.metrics.DiskDevUsage;
-import com.srotya.sysinfo.dao.metrics.DiskUsage;
 
 /**
  * @author ambudsharma
@@ -51,12 +51,12 @@ public class TestDiskMon {
 	}
 
 	@Test
-	public void testDiskUsage() throws IOException {
+	public void testDiskUsage() throws Exception {
 		String lines = new String(
 				Files.readAllBytes(new File(getClass().getResource(TEST_FILE_PATH).getFile()).toPath()));
-		DiskUsage devs = DiskMon.computeUsage(lines);
-		assertEquals(1, devs.getDevs().size());
-		for (DiskDevUsage dev : devs.getDevs()) {
+		List<DiskDevUsage> devs = DiskMon.computeUsage(lines);
+		assertEquals(1, devs.size());
+		for (DiskDevUsage dev : devs) {
 			assertEquals(0.0f, dev.getRrqms(), 0);
 			assertEquals(0.09f, dev.getWrqms(), 0);
 			assertEquals(0.44f, dev.getRs(), 0);
@@ -70,8 +70,8 @@ public class TestDiskMon {
 
 		lines = new String(Files.readAllBytes(new File(getClass().getResource(TEST_FILE_PATH2).getFile()).toPath()));
 		devs = DiskMon.computeUsage(lines);
-		assertEquals(1, devs.getDevs().size());
-		for (DiskDevUsage dev : devs.getDevs()) {
+		assertEquals(1, devs.size());
+		for (DiskDevUsage dev : devs) {
 			assertEquals(0.0f, dev.getRrqms(), 0);
 			assertEquals(0.09f, dev.getWrqms(), 0);
 			assertEquals(0.44f, dev.getRs(), 0);

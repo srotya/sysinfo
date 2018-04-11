@@ -45,7 +45,7 @@ public class SimpleAgent {
 	public static void premain(String args, Instrumentation instrumentation) {
 		try {
 			String hostname = InetAddress.getLocalHost().getHostName();
-			ScheduledExecutorService es = Executors.newScheduledThreadPool(1);
+			ScheduledExecutorService es = Executors.newScheduledThreadPool(2);
 
 			String destination = System.getProperty("destination", "localhost");
 			int port = Integer.parseInt(System.getProperty("port", "8080"));
@@ -53,6 +53,7 @@ public class SimpleAgent {
 			String url = String.format(URL, destination, port, db);
 			CloseableHttpClient client = buildClient(url, 2000, 5000);
 			es.scheduleAtFixedRate(new CPU(client, hostname, url), 0, 1, TimeUnit.SECONDS);
+			es.scheduleAtFixedRate(new Disk(client, hostname, url), 0, 1, TimeUnit.SECONDS);
 			System.out.println("Agent started");
 		} catch (Exception e) {
 			e.printStackTrace();
