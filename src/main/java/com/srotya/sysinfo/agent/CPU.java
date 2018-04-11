@@ -23,6 +23,7 @@ import com.srotya.sysinfo.service.CPUMon;
 
 public class CPU implements Runnable {
 
+	static final String CPU_METRICS = "cpu,host=%s,core=%d percentage=%f,user=%di,system=%di,nice=%di,iow=%di,irq=%di %d";
 	private CloseableHttpClient client;
 	private String hostname;
 	private String url;
@@ -40,7 +41,7 @@ public class CPU implements Runnable {
 			CPUUsage cpu = CPUMon.getCPUUsage(CPUMon.CPU_STATS);
 			for (int i = 0; i < cpu.getProcessors().length; i++) {
 				ProcessorUsage processorUsage = cpu.getProcessors()[i];
-				String format = String.format(SimpleAgent.CPU_METRICS, hostname, processorUsage.getCurrentPercentage(),
+				String format = String.format(CPU_METRICS, hostname, i, processorUsage.getCurrentPercentage(),
 						processorUsage.getUser(), processorUsage.getSystem(), processorUsage.getNice(),
 						processorUsage.getIowait(), processorUsage.getIrq(), cpu.getTs() * 1000 * 1000);
 				builder.append(format + "\n");

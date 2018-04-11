@@ -23,6 +23,7 @@ import com.srotya.sysinfo.service.NetMon;
 
 public class Network implements Runnable {
 
+	static final String NET = "net,host=%s,dev=%s rxb=%d,rxp=%d,rxe=%d,txb=%d,txp=%d,txe=%d %d";
 	private CloseableHttpClient client;
 	private String hostname;
 	private String url;
@@ -39,7 +40,7 @@ public class Network implements Runnable {
 			NetworkUsage net = NetMon.computeUsage(NetMon.NETWORK_STATS);
 			StringBuilder payload = new StringBuilder();
 			for (NetDeviceUsage dev : net.getDevices()) {
-				String format = String.format(SimpleAgent.NET, hostname, dev.getDeviceName(), dev.getRxBytes(),
+				String format = String.format(NET, hostname, dev.getDeviceName(), dev.getRxBytes(),
 						dev.getRxPackets(), dev.getRxErrs(), dev.getTxBytes(), dev.getTxPackets(), dev.getTxErrs(),
 						net.getTs() * 1000 * 1000);
 				payload.append(format);

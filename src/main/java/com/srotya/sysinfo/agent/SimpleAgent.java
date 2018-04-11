@@ -41,8 +41,6 @@ import org.apache.http.impl.client.HttpClients;
 public class SimpleAgent {
 
 	private static final String URL = "http://%s:%d/influx?db=%s";
-	static final String CPU_METRICS = "cpu,host=%s percentage=%f,user=%di,system=%di,nice=%di,iow=%di,irq=%di %d";
-	static final String NET = "net,host=%s,dev=%s rxb=%d,rxp=%d,rxe=%d,txb=%d,txp=%d,txe=%d %d";
 
 	public static void premain(String args, Instrumentation instrumentation) {
 		try {
